@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Speak - Jack and the Beanstalk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Patrick Hand', cursive;
+    }
+    .speak-btn {
+      margin-left: 8px;
+      background-color: #bbf7d0;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .speak-btn:hover {
+      background-color: #86efac;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-blue-50 min-h-screen flex flex-col items-center p-6">
+  <div class="max-w-3xl bg-white/90 backdrop-blur-md border border-green-200 rounded-xl shadow-xl p-8">
+
+    <h1 class="text-4xl font-extrabold text-green-800 mb-4 text-center">🌱 Jack and the Beanstalk</h1>
+
+    <!-- Instruction Box with Audio -->
+    <div class="bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 p-5 rounded-lg mb-6 relative">
+      <h2 class="text-2xl font-semibold mb-2">🗣 Speaking Instruction</h2>
+      <button onclick="speakInstruction()" class="absolute top-4 right-4 bg-green-300 hover:bg-green-400 text-sm font-semibold px-3 py-1 rounded-full">
+        🔊 Speak Instruction
+      </button>
+      <div id="instructionText">
+        <p>
+          Watch the animated story <strong>"Jack and the Beanstalk"</strong> below carefully.
+          Then, practice retelling the story out loud in your own words.
+        </p>
+        <p class="mt-3">
+          While speaking, try to cover these points:
+        </p>
+        <ul class="list-disc list-inside mt-2">
+          <li>🗣 Who are the main <strong>characters</strong>?</li>
+          <li>🗣 Where does the story <strong>take place</strong>?</li>
+          <li>🗣 What is the main <strong>problem</strong> Jack faces?</li>
+          <li>🗣 How is the <strong>problem solved</strong>?</li>
+          <li>🗣 How does the story <strong>end</strong>?</li>
+        </ul>
+        <p class="mt-3">
+          You can practice speaking alone, with a partner, or record yourself.
+        </p>
+        <p class="mt-3 italic text-sm text-gray-700">
+          Tip: Try to speak clearly and use your own words, not just repeating the text.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tombol Audio Kontrol -->
+    <div class="flex justify-end gap-3 mb-4">
+      <button onclick="speakAll()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow">
+        🔊 Read Entire Story
+      </button>
+      <button onclick="stopSpeaking()" class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-full shadow">
+        ⏹ Stop
+      </button>
+    </div>
+
+    <!-- Cerita -->
+    <article class="prose prose-lg prose-green max-w-none text-justify mb-10">
+      <p>Once upon a time, there was a boy named Jack who lived with his mother in a tiny cottage in the countryside. They were very poor, and the only thing they owned was a very old cow.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>One day, Jack's mother said, "I'm afraid our old cow will no longer give milk. We will have to sell her so we can buy food. Jack, take her to the market and see what you can get."
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>"Yes, Mother," said Jack, as he headed down the country lane with the old cow to see what she would fetch at the market.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>It was a very long walk from Jack's home to the market, so he decided to take a shortcut through the forest. "Well, hello there," said a croaking voice. Jack jumped in surprise and saw an old traveler sitting upon a tree stump.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>"Where are you headed, my boy?" asked the man. "Our cow no longer gives milk," Jack told him. "So I'm taking her to the market to see what I can get."
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>"You know, it's a very long way, and you won't get much for that old cow. But I'll give you something for her," the old man said, holding out his hand. "How about these five magic beans?"
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>Magic beans! Even though they didn’t look very magical, Jack thought they sounded very exciting. So, he gave the old man the cow and took the beans home to show his mother.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>"You're back so soon! What did you get for our old cow?" his mother exclaimed. "Look, Mother!" said Jack excitedly. "I traded our old cow for five magic beans!"
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>But his mother was not at all happy. "Silly boy!" she scolded. "Now we have no cow and no money!" She tossed the five beans out the window and sent Jack straight to bed.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>The next morning, Jack awoke and looked out the window at the bright, sunny day. But then he jumped up in surprise. Right outside their cottage, a giant beanstalk had sprouted up from the ground and stretched all the way into the clouds!
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>Jack, being a very curious boy, began to climb the beanstalk—higher and higher—until his little cottage looked just like a tiny dot below.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>At the top, Jack found a huge castle. A kind giant woman greeted him and said, "You must leave quickly! My husband is a giant, and if he sees you, he’ll eat you for breakfast!"
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>She led Jack into a huge kitchen and gave him delicious food: eggs, sausage, toast, and more. Jack ate until he was full and happy. "Thank you," he said, "but I really should be getting home."
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>Just then, rumbling footsteps made the castle floor shake. "Oh no!" said the giant woman. "My husband is home. Quick, hide in the cupboard!" Jack jumped in just as the giant entered the room. He had a long, scraggly beard and an angry scowl on his face.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>On another visit, Jack heard singing while playing outside. The sound came from high above—from the beanstalk. Curious, Jack climbed again and discovered a magical harp that sang by itself. "He forces me to play him a song so he can sleep. Please, take me away from here," the harp said.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>Jack couldn’t say no. "Okay," he said. "But we must be quick and quiet." He took the harp in his arms and ran out of the castle as fast as he could. Together, they scrambled down the beanstalk.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>But as soon as the harp stopped playing, the giant awoke. Seeing his harp gone, he roared in anger and chased after Jack.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>Jack shouted for help as he neared the ground. As soon as he touched down, he grabbed an axe and began chopping down the beanstalk. The giant saw the beanstalk was falling and quickly climbed back up to his castle in the clouds.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>The huge beanstalk fell—and that was the last time Jack ever saw the giant.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>"Thank you! How can I ever repay you?" asked the harp. "You can come live with me, and I’ll never force you to play or sing if you don’t want to," Jack replied.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>The harp was very happy. So was Jack’s mother when she saw the magical singing harp. People came from miles around to hear its music. With the harp and a magical hen that laid golden eggs, Jack and his mother lived happily and were never hungry again.
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+      <p>THE END
+        <button class="speak-btn" onclick="speak(this)">🔊 Read</button>
+      </p>
+    </article>
+
+    <!-- Video -->
+    <h2 class="text-2xl font-semibold mt-10 mb-4 text-green-700 text-center">🎬 Watch the Animated Story</h2>
+    <div class="aspect-video overflow-hidden rounded-xl shadow-lg mb-8">
+      <iframe 
+        class="w-full h-full" 
+        src="https://www.youtube.com/embed/-qxtmahpBwM" 
+        title="Jack and the Beanstalk Animated Story" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="text-center">
+      <a href="index.html" class="inline-block mt-4 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full shadow-md transition">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    let currentUtterance;
+
+    function stopSpeaking() {
+      if (speechSynthesis.speaking || speechSynthesis.pending) {
+        speechSynthesis.cancel();
+      }
+    }
+
+    function speak(button) {
+      stopSpeaking();
+      const text = button.parentElement.innerText;
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.lang = "en-US";
+      currentUtterance.rate = 1;
+      speechSynthesis.speak(currentUtterance);
+    }
+
+    function speakInstruction() {
+      stopSpeaking();
+      const text = document.getElementById("instructionText").innerText;
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.lang = "en-US";
+      currentUtterance.rate = 1;
+      speechSynthesis.speak(currentUtterance);
+    }
+
+    function speakAll() {
+      stopSpeaking();
+      const fullText = document.querySelector("article").innerText;
+      currentUtterance = new SpeechSynthesisUtterance(fullText);
+      currentUtterance.lang = "en-US";
+      currentUtterance.rate = 1;
+      speechSynthesis.speak(currentUtterance);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jack and the Beanstalk - Learning Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+    body {
+      font-family: 'Fredoka', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-green-100 via-emerald-100 to-lime-100 min-h-screen flex items-center justify-center p-6">
+
+  <!-- Sound -->
+  <audio id="click-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3f00cb746f.mp3" preload="auto"></audio>
+
+  <div class="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-3xl border border-green-200 relative overflow-hidden">
+
+    <!-- Decorative Illustration -->
+    <img src="https://i.ibb.co/jrC0pbK/jack.png" alt="Jack" class="w-32 absolute top-4 right-4 hidden sm:block animate-bounce">
+
+    <div class="text-center space-y-6">
+      <h1 class="text-5xl font-bold text-green-700">🌱 Jack and the Beanstalk</h1>
+      <p class="text-gray-600 text-lg">Welcome to your magical learning adventure! Choose an activity:</p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+        <button onclick="navigate('learn.html')" class="flex items-center justify-center gap-2 transition transform hover:scale-105 duration-300 bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-xl shadow-md">
+          📖 <span>Start Learning</span>
+        </button>
+        <button onclick="navigate('storymap.html')" class="flex items-center justify-center gap-2 transition transform hover:scale-105 duration-300 bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-xl shadow-md">
+          🗺️ <span>Story Mapping</span>
+        </button>
+        <button onclick="navigate('games.html')" class="flex items-center justify-center gap-2 transition transform hover:scale-105 duration-300 bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-xl shadow-md">
+          🧩 <span>Games</span>
+        </button>
+        <button onclick="navigate('quiz.html')" class="flex items-center justify-center gap-2 transition transform hover:scale-105 duration-300 bg-purple-500 hover:bg-purple-600 text-white py-4 px-6 rounded-xl shadow-md">
+          📝 <span>Quiz</span>
+        </button>
+      </div>
+
+      <footer class="text-xs text-gray-400 mt-8">
+        Created with 💡 by Your English Class
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    function navigate(url) {
+      const audio = document.getElementById('click-sound');
+      audio.play();
+      setTimeout(() => {
+        window.location.href = url;
+      }, 300); // delay to allow sound to play
+    }
+  </script>
+
+</body>
+</html>

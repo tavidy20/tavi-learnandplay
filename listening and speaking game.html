@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tavi's Story Quest: Jack and the Beanstalk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8ff;
+      padding: 20px;
+      margin: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #4a90e2;
+      margin-bottom: 5px;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 700px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #357ab8;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      max-width: 500px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .question {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tavi's Story Quest</h1>
+  <h2>Jack and the Beanstalk - Listening & Speaking Game</h2>
+
+  <div class="section">
+    <h3>Instructions</h3>
+    <p>Listen to each part of the story and answer the questions. Practice speaking, and you'll get a score at the end with a motivational message!</p>
+  </div>
+
+  <div class="section">
+    <h3>Story Audio</h3>
+    <button onclick="playStory(0)">🔊 Play Scene 1</button>
+    <button onclick="playStory(1)">🔊 Play Scene 2</button>
+    <button onclick="playStory(2)">🔊 Play Scene 3</button>
+    <button onclick="stopSpeech()">🛑 Stop</button>
+  </div>
+
+  <div class="section">
+    <h3>Listening Questions</h3>
+    <form id="quizForm">
+      <div class="question">
+        <p>1. What did Jack trade the cow for?</p>
+        <input type="text" name="q1">
+      </div>
+      <div class="question">
+        <p>2. Who lived with Jack?</p>
+        <input type="text" name="q2">
+      </div>
+      <div class="question">
+        <p>3. How many beans did Jack get?</p>
+        <input type="text" name="q3">
+      </div>
+      <div class="question">
+        <p>4. Where did Jack go to sell the cow?</p>
+        <input type="text" name="q4">
+      </div>
+      <div class="question">
+        <p>5. What grew from the beans?</p>
+        <input type="text" name="q5">
+      </div>
+      <div class="question">
+        <p>6. What did Jack find at the top of the beanstalk?</p>
+        <input type="text" name="q6">
+      </div>
+      <div class="question">
+        <p>7. Who lived in the castle in the sky?</p>
+        <input type="text" name="q7">
+      </div>
+      <div class="question">
+        <p>8. What did Jack take from the castle?</p>
+        <input type="text" name="q8">
+      </div>
+      <div class="question">
+        <p>9. How did Jack escape?</p>
+        <input type="text" name="q9">
+      </div>
+      <div class="question">
+        <p>10. What did Jack use to chop down the beanstalk?</p>
+        <input type="text" name="q10">
+      </div>
+      <br>
+      <button type="button" onclick="checkAnswers()">Submit Answers</button>
+    </form>
+    <p id="score"></p>
+  </div>
+
+  <div class="section">
+    <h3>Speaking Practice</h3>
+    <p>Say this sentence: <strong>"Jack traded the cow for five magic beans."</strong></p>
+    <button onclick="speakSentence()">▶️ Hear Sample</button>
+    <button onclick="startRecording()">🎤 Record</button>
+    <button onclick="stopRecording()">⏹️ Stop</button>
+    <p id="transcript"></p>
+  </div>
+  <!-- ✅ Tambahan tombol kembali ke menu game -->
+<a href="games.html" class="mt-6 inline-block bg-purple-500 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-600">
+  ← Back to Game Menu
+</a>
+
+  <script>
+    const storyScenes = [
+      "Once upon a time, there was a boy named Jack who lived with his mother in a tiny cottage. They were very poor and only had one old cow. Jack’s mother told him to sell the cow. On the way to the market, Jack met a strange man who offered five magic beans for the cow. Jack took the beans and went home.",
+      "When Jack returned home, his mother was angry. She threw the beans out of the window. The next morning, a huge beanstalk had grown up into the sky. Jack climbed the beanstalk.",
+      "At the top, Jack found a castle where a giant lived. He took a bag of gold, a hen that laid golden eggs, and a magical harp. The giant chased Jack down the beanstalk, but Jack chopped it down and escaped."
+    ];
+
+    function playStory(index) {
+      stopSpeech();
+      const utterance = new SpeechSynthesisUtterance(storyScenes[index]);
+      speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeech() {
+      speechSynthesis.cancel();
+    }
+
+    function speakSentence() {
+      const sample = new SpeechSynthesisUtterance("Jack traded the cow for five magic beans.");
+      speechSynthesis.speak(sample);
+    }
+
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("transcript").innerText = `You said: "${transcript}"`;
+      };
+
+      recognition.onerror = function(event) {
+        alert("Speech recognition error: " + event.error);
+      };
+    } else {
+      alert("Speech Recognition not supported in this browser.");
+    }
+
+    function startRecording() {
+      if (recognition) {
+        document.getElementById("transcript").innerText = "Listening...";
+        recognition.start();
+      }
+    }
+
+    function stopRecording() {
+      if (recognition) {
+        recognition.stop();
+      }
+    }
+
+    function checkAnswers() {
+      const answers = [
+        "five magic beans",
+        "his mother",
+        "five",
+        "market",
+        "beanstalk",
+        "a castle",
+        "a giant",
+        "gold, hen, harp",
+        "he climbed down",
+        "an axe"
+      ];
+
+      let score = 0;
+      const form = document.forms["quizForm"];
+      for (let i = 0; i < answers.length; i++) {
+        const userAnswer = form[`q${i+1}`].value.toLowerCase().trim();
+        if (userAnswer.includes(answers[i])) {
+          score++;
+        }
+      }
+
+      let message = "";
+      if (score === 10) message = "Excellent work! You're a story master!";
+      else if (score >= 7) message = "Great job! You're doing really well.";
+      else if (score >= 4) message = "Nice effort! Keep practicing and you'll get there.";
+      else message = "Don't give up! Try again and listen carefully next time.";
+
+      document.getElementById("score").innerText = `Your Score: ${score}/10\n${message}`;
+    }
+  </script>
+</body>
+</html>

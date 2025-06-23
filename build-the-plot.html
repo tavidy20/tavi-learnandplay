@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Build the Plot: Plot Chain Cards by Tavi</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: #fefefe;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #4a90e2;
+    }
+    #cards, #slots {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 15px;
+    }
+    .card, .slot {
+      border: 2px dashed #ccc;
+      padding: 15px;
+      width: 140px;
+      height: 80px;
+      background: #fff;
+      cursor: grab;
+      transition: 0.3s;
+      border-radius: 10px;
+    }
+    .card:hover {
+      background-color: #e6f7ff;
+    }
+    .slot {
+      background-color: #f9f9f9;
+      border: 2px dashed #999;
+    }
+    #feedback {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #357ab8;
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="mainTitle">Build the Plot: Plot Chain Cards by Tavi</h1>
+
+<!-- Tombol kontrol suara -->
+<div>
+  <button onclick="speakInstruction()">🔊 Listen Instruction</button>
+  <button onclick="stopSpeech()">🔇 Stop Voice</button>
+</div>
+
+<!-- Petunjuk bermain -->
+<div style="background-color:#f0f8ff; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #4a90e2;">
+  <h2>How to Play: Build the Plot</h2>
+  <ol style="text-align: left; max-width: 600px; margin: auto; font-size: 1.05em;" id="instructionText">
+    <li>Read all the plot cards above the slots.</li>
+    <li>Drag each card into the slot where it belongs — in the correct plot order.</li>
+    <li>Use the following plot sequence:
+      <ul>
+        <li>1. Exposition</li>
+        <li>2. Rising Action</li>
+        <li>3. Climax</li>
+        <li>4. Falling Action</li>
+        <li>5. Resolution</li>
+      </ul>
+    </li>
+    <li>After placing all cards, click "Check My Story" to see if you got it right!</li>
+    <li>If needed, click "Start Over" to try again.</li>
+  </ol>
+  <p style="font-style: italic; color: #333;">
+    Tip: Think like a storyteller — what comes first, what builds up, and how it ends?
+  </p>
+</div>
+
+<p>Drag and drop the story parts into the correct order!</p>
+
+<!-- Kartu cerita -->
+<div id="cards">
+  <div class="card" draggable="true" id="card1" data-type="Exposition" onclick="speakText(this.textContent)">Meet the main character in a small village...</div>
+  <div class="card" draggable="true" id="card2" data-type="Rising Action" onclick="speakText(this.textContent)">Something strange starts to happen...</div>
+  <div class="card" draggable="true" id="card3" data-type="Climax" onclick="speakText(this.textContent)">A big showdown begins!</div>
+  <div class="card" draggable="true" id="card4" data-type="Falling Action" onclick="speakText(this.textContent)">The danger fades away...</div>
+  <div class="card" draggable="true" id="card5" data-type="Resolution" onclick="speakText(this.textContent)">Everything returns to normal... or does it?</div>
+</div>
+
+<h2>Put the story in order:</h2>
+<div id="slots">
+  <div class="slot" data-expected="Exposition"></div>
+  <div class="slot" data-expected="Rising Action"></div>
+  <div class="slot" data-expected="Climax"></div>
+  <div class="slot" data-expected="Falling Action"></div>
+  <div class="slot" data-expected="Resolution"></div>
+</div>
+
+<!-- Tombol periksa dan reset -->
+<button onclick="checkAnswer()">Check My Story</button>
+<button onclick="resetGame()">Start Over</button>
+
+<div id="feedback"></div>
+
+<!-- ✅ Tambahan tombol kembali ke menu game -->
+<a href="games.html" class="mt-6 inline-block bg-purple-500 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-600">
+  ← Back to Game Menu
+</a>
+
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const slots = document.querySelectorAll('.slot');
+
+  // drag and drop logic
+  cards.forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', card.id);
+    });
+  });
+
+  slots.forEach(slot => {
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      const cardId = e.dataTransfer.getData('text/plain');
+      const card = document.getElementById(cardId);
+      if (!slot.hasChildNodes()) {
+        slot.appendChild(card);
+        speakText(card.textContent); // Baca teks ketika dipindah
+      }
+    });
+  });
+
+  function checkAnswer() {
+    let correct = 0;
+    slots.forEach(slot => {
+      const card = slot.firstChild;
+      if (card && card.dataset.type === slot.dataset.expected) {
+        correct++;
+      }
+    });
+
+    const feedback = document.getElementById('feedback');
+    if (correct === slots.length) {
+      feedback.innerHTML = "You nailed it! That's a perfect plot chain!";
+      speakText("You nailed it! That's a perfect plot chain!");
+    } else if (correct >= 3) {
+      feedback.innerHTML = `Almost there! You got ${correct} parts correct. Try again!`;
+      speakText(`Almost there! You got ${correct} parts correct. Try again!`);
+    } else {
+      feedback.innerHTML = `Plot twist! Only ${correct} parts were correct. Give it another shot!`;
+      speakText(`Plot twist! Only ${correct} parts were correct. Give it another shot!`);
+    }
+  }
+
+  function resetGame() {
+    const cardArea = document.getElementById('cards');
+    cards.forEach(card => {
+      cardArea.appendChild(card);
+    });
+    document.getElementById('feedback').innerHTML = "";
+    stopSpeech();
+  }
+
+  function speakText(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'en-US';
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+  }
+
+  function speakInstruction() {
+    const instruction = document.getElementById('instructionText').innerText;
+    speakText(instruction);
+  }
+
+  function stopSpeech() {
+    speechSynthesis.cancel();
+  }
+</script>
+
+</body>
+</html>
