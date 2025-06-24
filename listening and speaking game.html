@@ -69,6 +69,7 @@
     <button onclick="playStory(0)">▶ Play Part 1</button>
     <button onclick="playStory(1)">▶ Play Part 2</button>
     <button onclick="playStory(2)">▶ Play Part 3</button>
+    <button onclick="stopStory()" style="background-color: #e94e4e;">⏹ Stop</button>
 
     <form name="quizForm">
       <p>1. What did Jack trade the cow for?<br><input type="text" name="q1" /></p>
@@ -106,8 +107,15 @@
     ];
 
     let speakingIndex = 0;
+    let englishVoice = null;
+
     function setSpeakingIndex(index) {
       speakingIndex = index;
+    }
+
+    function loadEnglishVoice() {
+      const voices = speechSynthesis.getVoices();
+      englishVoice = voices.find(voice => voice.lang.startsWith('en') && voice.name.toLowerCase().includes('english'));
     }
 
     function renderSpeakingPractice() {
@@ -127,12 +135,18 @@
 
     function speakText(index) {
       const utterance = new SpeechSynthesisUtterance(speakingSentences[index]);
+      if (englishVoice) utterance.voice = englishVoice;
       speechSynthesis.speak(utterance);
     }
 
     function playStory(index) {
       const utterance = new SpeechSynthesisUtterance(storyScenes[index]);
+      if (englishVoice) utterance.voice = englishVoice;
       speechSynthesis.speak(utterance);
+    }
+
+    function stopStory() {
+      speechSynthesis.cancel();
     }
 
     let recognition;
@@ -197,7 +211,12 @@
       document.getElementById("score").innerText = `Your Score: ${score}/10\n${message}`;
     }
 
-    window.onload = renderSpeakingPractice;
+    window.onload = function() {
+      speechSynthesis.onvoiceschanged = () => {
+        loadEnglishVoice();
+        renderSpeakingPractice();
+      };
+    };
   </script>
 </body>
 </html>
