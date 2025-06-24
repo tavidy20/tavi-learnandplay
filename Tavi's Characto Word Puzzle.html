@@ -54,97 +54,110 @@
   </main>
 
   <script>
-    const sentences = [
-      "Jack climbed the giant beanstalk to reach the castle in the clouds",
-      "He traded the cow for magic beans at the market",
-      "A giant lived in the castle high above the sky",
-      "The beanstalk grew overnight reaching into the sky",
-      "Jack took the golden harp and ran away quickly"
-    ];
+  const sentences = [
+    "Jack climbed the giant beanstalk to reach the castle in the clouds",
+    "He traded the cow for magic beans at the market",
+    "A giant lived in the castle high above the sky",
+    "The beanstalk grew overnight reaching into the sky",
+    "Jack took the golden harp and ran away quickly"
+  ];
 
-    let currentIndex = 0;
-    let correctSentence = sentences[currentIndex].split(" ");
-    let scrambledWords = shuffle([...correctSentence]);
+  let currentIndex = 0;
+  let correctSentence = sentences[currentIndex].split(" ");
+  let scrambledWords = shuffle([...correctSentence]);
 
-    const scrambledContainer = document.getElementById('scrambled-words');
-    const answerArea = document.getElementById('answer-area');
-    const checkBtn = document.getElementById('check-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const resultMessage = document.getElementById('result-message');
-    const progressIndicator = document.getElementById('progress-indicator');
+  const scrambledContainer = document.getElementById('scrambled-words');
+  const answerArea = document.getElementById('answer-area');
+  const checkBtn = document.getElementById('check-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const resultMessage = document.getElementById('result-message');
+  const progressIndicator = document.getElementById('progress-indicator');
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+  }
 
-    function renderScrambled() {
-      scrambledContainer.innerHTML = '';
-      answerArea.innerHTML = '';
-      resultMessage.textContent = '';
-      progressIndicator.textContent = `Puzzle ${currentIndex + 1} of ${sentences.length}`;
-      scrambledWords.forEach((word) => {
-        const btn = document.createElement('button');
-        btn.textContent = word;
-        btn.className = 'bg-indigo-300 text-indigo-900 font-semibold rounded-full px-4 py-2 shadow cursor-pointer hover:bg-indigo-400 transition';
+  function speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
+  }
+
+  function renderScrambled() {
+    scrambledContainer.innerHTML = '';
+    answerArea.innerHTML = '';
+    resultMessage.textContent = '';
+    progressIndicator.textContent = `Puzzle ${currentIndex + 1} of ${sentences.length}`;
+
+    scrambledWords.forEach((word) => {
+      const btn = document.createElement('button');
+      btn.textContent = word;
+      btn.className = 'bg-indigo-300 text-indigo-900 font-semibold rounded-full px-4 py-2 shadow cursor-pointer hover:bg-indigo-400 transition';
+
+      btn.onclick = () => {
+        speakText(word); // 🔊 suara saat diklik
+        answerArea.appendChild(btn);
         btn.onclick = () => {
-          answerArea.appendChild(btn);
-          btn.onclick = () => {
-            scrambledContainer.appendChild(btn);
-            btn.onclick = onWordClick;
-          };
+          speakText(word); // 🔊 suara saat dikembalikan
+          scrambledContainer.appendChild(btn);
+          btn.onclick = onWordClick;
         };
-        const onWordClick = btn.onclick;
-        scrambledContainer.appendChild(btn);
-      });
+      };
+
+      const onWordClick = btn.onclick;
+      scrambledContainer.appendChild(btn);
+    });
+  }
+
+  checkBtn.onclick = () => {
+    const userAnswer = Array.from(answerArea.children).map(btn => btn.textContent);
+    if (userAnswer.length !== correctSentence.length) {
+      resultMessage.textContent = "⚠️ Use all words to complete the sentence!";
+      resultMessage.className = "text-red-600 font-bold mt-6";
+      return;
     }
 
-    checkBtn.onclick = () => {
-      const userAnswer = Array.from(answerArea.children).map(btn => btn.textContent);
-      if (userAnswer.length !== correctSentence.length) {
-        resultMessage.textContent = "⚠️ Use all words to complete the sentence!";
-        resultMessage.className = "text-red-600 font-bold mt-6";
-        return;
-      }
-      const isCorrect = userAnswer.every((word, i) => word === correctSentence[i]);
-      if (isCorrect) {
-        resultMessage.textContent = "🎉 Correct! You're amazing!";
-        resultMessage.className = "text-green-600 font-bold mt-6";
+    const isCorrect = userAnswer.every((word, i) => word === correctSentence[i]);
 
-        setTimeout(() => {
-          currentIndex++;
-          if (currentIndex < sentences.length) {
-            correctSentence = sentences[currentIndex].split(" ");
-            scrambledWords = shuffle([...correctSentence]);
-            renderScrambled();
-          } else {
-            progressIndicator.textContent = "";
-            scrambledContainer.innerHTML = '';
-            answerArea.innerHTML = '';
-            resultMessage.textContent = "🏆 You completed all puzzles! Great job!";
-            resultMessage.className = "text-blue-700 font-extrabold mt-6 text-2xl";
-            checkBtn.disabled = true;
-            resetBtn.disabled = true;
-          }
-        }, 1500);
-      } else {
-        resultMessage.textContent = "❌ Not quite right. Try again!";
-        resultMessage.className = "text-red-600 font-bold mt-6";
-      }
-    };
+    if (isCorrect) {
+      const sentenceSpoken = correctSentence.join(" ");
+      speakText("Correct! " + sentenceSpoken); // 🔊 suara kalimat benar
 
-    resetBtn.onclick = () => {
-      answerArea.innerHTML = '';
-      scrambledWords = shuffle([...correctSentence]);
-      renderScrambled();
-      resultMessage.textContent = '';
-    };
+      resultMessage.textContent = "🎉 Correct! You're amazing!";
+      resultMessage.className = "text-green-600 font-bold mt-6";
 
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex < sentences.length) {
+          correctSentence = sentences[currentIndex].split(" ");
+          scrambledWords = shuffle([...correctSentence]);
+          renderScrambled();
+        } else {
+          progressIndicator.textContent = "";
+          scrambledContainer.innerHTML = '';
+          answerArea.innerHTML = '';
+          resultMessage.textContent = "🏆 You completed all puzzles! Great job!";
+          resultMessage.className = "text-blue-700 font-extrabold mt-6 text-2xl";
+          checkBtn.disabled = true;
+          resetBtn.disabled = true;
+        }
+      }, 1500);
+    } else {
+      resultMessage.textContent = "❌ Not quite right. Try again!";
+      resultMessage.className = "text-red-600 font-bold mt-6";
+    }
+  };
+
+  resetBtn.onclick = () => {
+    answerArea.innerHTML = '';
+    scrambledWords = shuffle([...correctSentence]);
     renderScrambled();
-  </script>
+    resultMessage.textContent = '';
+  };
 
-</body>
-</html>
+  renderScrambled();
+</script>
